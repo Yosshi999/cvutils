@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Jimp } from "jimp";
 import { useState, useRef, useEffect } from "react";
 import { Tensor, InferenceSession } from 'onnxruntime-web';
