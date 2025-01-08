@@ -3,11 +3,13 @@ import Image from "next/image";
 import { Jimp } from "jimp";
 import { useState, useRef, useEffect } from "react";
 import { Tensor, InferenceSession } from 'onnxruntime-web';
+import Modal from './modal';
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>();
   const [downloadURL, setDownloadURL] = useState<string>("");
   const [downloadName, setDownloadName] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const onChangeImage = async (e) => {
@@ -209,23 +211,12 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        {/* {downloadURL && (
-          <div className="flex gap-4 items-center flex-col sm:flex-row">
-            <a
-              className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-              href={downloadURL}
-              download={downloadName}
-            >
-              Download
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
-                <path d="M12 2v14m0 0l-4-4m4 4l4-4M4 22h16"/>
-              </svg>
-            </a>
-          </div>
-        )} */}
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+        <button onClick={() => setIsModalOpen(true)} className="text-blue-500 underline">
+          Credits
+        </button>
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </footer>
     </div>
   );
