@@ -173,20 +173,8 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src={`${BASE_PATH}/next.svg`}
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Select an image from your device.
-          </li>
-          <li>Press &quot;Start Processing&quot; to resume.</li>
-        </ol>
+        <h1 className="text-4xl font-extrabold">FaceBlur</h1>
+        Hide their faces.
 
         <div className="flex flex-col items-center justify-center">
           <label className="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-lg shadow-lg tracking-wide hover:bg-blue-700 text-black hover:text-white">
