@@ -4,6 +4,8 @@ import { Jimp } from "jimp";
 import { useState, useRef, useEffect } from "react";
 import { Tensor, InferenceSession } from 'onnxruntime-web';
 import Modal from './modal';
+import nextConfig from '../next.config';
+const BASE_PATH = nextConfig.basePath || "";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>();
@@ -84,7 +86,7 @@ export default function Home() {
 
     // load session
     const session = await InferenceSession
-                          .create('/yolox_t_body_head_hand_face_0299_0.4265_post_1x3x480x960.onnx',
+                          .create(`${BASE_PATH}/yolox_t_body_head_hand_face_0299_0.4265_post_1x3x480x960.onnx`,
                           { executionProviders: ['wasm'], graphOptimizationLevel: 'all' });
     console.log('Inference session created');
 
@@ -173,7 +175,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
-          src="/next.svg"
+          src={`${BASE_PATH}/next.svg`}
           alt="Next.js logo"
           width={180}
           height={38}
