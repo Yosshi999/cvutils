@@ -8,14 +8,15 @@ import Modal from './modal';
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>();
   const [downloadURL, setDownloadURL] = useState<string>("");
-  const [downloadName, setDownloadName] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const onChangeImage = async (e) => {
+  const onChangeImage = async (e: React.FormEvent<HTMLInputElement>) => {
     setDownloadURL("");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const heic2any = require("heic2any");
-    const file = e.target.files[0];
+    if (!e.currentTarget.files) return;
+    const file = e.currentTarget.files[0];
     const reader = new FileReader();
     reader.onload = () => { setImageSrc(reader.result as string); }
     const fname = file.name.toLowerCase();
@@ -31,7 +32,6 @@ export default function Home() {
     } else {
       reader.readAsDataURL(file);
     }
-    setDownloadName(fname + ".anon.jpg");
   };
   const processImage = async (path: string) => {
     const img = new window.Image();
@@ -67,7 +67,7 @@ export default function Home() {
 
     const imageBufferData = jimg.bitmap.data;
     const dims = [1, 3, jimg.height, jimg.width];
-    const [redArray, greenArray, blueArray] = new Array(new Array<number>(), new Array<number>(), new Array<number>());
+    const [redArray, greenArray, blueArray] = [new Array<number>(), new Array<number>(), new Array<number>()];
     for (let i = 0; i < imageBufferData.length; i += 4) {
       redArray.push(imageBufferData[i]);
       greenArray.push(imageBufferData[i + 1]);
@@ -126,7 +126,7 @@ export default function Home() {
       [1, 4, 6, 4, 1],
     ];
     const ctx = canvasRef.current!.getContext("2d")!;
-    for (let face of faces) {
+    for (const face of faces) {
       const faceImg = await Jimp.fromBitmap(ctx.getImageData(face[0], face[1], face[2]-face[0], face[3]-face[1]));
       const faceW = faceImg.width;
       const faceH = faceImg.height;
@@ -183,7 +183,7 @@ export default function Home() {
           <li className="mb-2">
             Select an image from your device.
           </li>
-          <li>Press "Start Processing" to resume.</li>
+          <li>Press &quot;Start Processing&quot; to resume.</li>
         </ol>
 
         <div className="flex flex-col items-center justify-center">
