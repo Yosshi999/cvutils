@@ -10,6 +10,7 @@ export default function Home() {
   const [imageSrc, setImageSrc] = useState<string>();
   const [downloadURL, setDownloadURL] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [sessionCache, setSessionCache] = useState<InferenceSession | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const onChangeImage = async (e: React.FormEvent<HTMLInputElement>) => {
@@ -34,6 +35,17 @@ export default function Home() {
       reader.readAsDataURL(file);
     }
   };
+
+  const getModel = async () => {
+    if (sessionCache) return sessionCache;
+    const session = await InferenceSession
+                            .create(`${BASE_PATH}/yolox_t_body_head_hand_face_0299_0.4265_post_1x3x480x960.onnx`,
+                            { executionProviders: ['wasm'], graphOptimizationLevel: 'all' });
+    console.log('Inference session created');
+    setSessionCache(session);
+    return session;
+  }
+
   const processImage = async (path: string) => {
     const img = new window.Image();
 
@@ -84,10 +96,7 @@ export default function Home() {
     // console.log('Input tensor created', dims, inputTensor.data.byteLength);
 
     // load session
-    const session = await InferenceSession
-                          .create(`${BASE_PATH}/yolox_t_body_head_hand_face_0299_0.4265_post_1x3x480x960.onnx`,
-                          { executionProviders: ['wasm'], graphOptimizationLevel: 'all' });
-    console.log('Inference session created');
+    const session = await getModel();
 
     // inference
     const feeds: Record<string, Tensor> = {};
